@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>社區取服務｜簡報播放版</title>
+  <style>
+    html, body { margin:0; padding:0; height:100%; overflow:hidden; background:#ffffff; }
+    .slide {
+      position:absolute;
+      width:100%;
+      height:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      opacity:0;
+      transform: translateX(100%);
+    }
+    .slide.active {
+      opacity:1;
+      transform: translateX(0);
+      z-index:2;
+    }
+    .slide.prev { transform: translateX(-100%); }
+    img { max-width:100%; max-height:100%; object-fit:contain; }
+
+    /* 控制按鈕 */
+    .nav {
+      position:fixed;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:40px;
+      color:#333;
+      background:rgba(0,0,0,0.1);
+      padding:10px 20px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .left { left:10px; }
+    .right { right:10px; }
+
+    .counter {
+      position:fixed;
+      bottom:15px;
+      left:50%;
+      transform:translateX(-50%);
+      color:#333;
+      font-size:16px;
+      opacity:0.7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide active"><img src="./images/slide1.jpg"></div>
+<div class="slide"><img src="./images/slide2.jpg"></div>
+<div class="slide"><img src="./images/slide3.jpg"></div>
+<div class="slide"><img src="./images/slide4.jpg"></div>
+<div class="slide"><img src="./images/slide5.jpg"></div>
+<div class="slide"><img src="./images/slide6.jpg"></div>
+<div class="slide"><img src="./images/slide7.jpg"></div>
+<div class="slide"><img src="./images/slide8.jpg"></div>
+<div class="slide"><img src="./images/slide9.jpg"></div>
+<div class="slide"><img src="./images/slide10.jpg"></div>
+
+<div class="nav left" onclick="prevSlide()">❮</div>
+<div class="nav right" onclick="nextSlide()">❯</div>
+<div class="counter" id="counter">1 / 10</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(index) {
+    slides.forEach((s, i) => {
+      s.classList.remove('active','prev');
+      if(i === index) s.classList.add('active');
+      else if(i < index) s.classList.add('prev');
+    });
+    document.getElementById('counter').innerText = (index+1) + ' / ' + slides.length;
+  }
+
+  function nextSlide() {
+    if(current < slides.length - 1) {
+      current++;
+      showSlide(current);
+    }
+  }
+
+  function prevSlide() {
+    if(current > 0) {
+      current--;
+      showSlide(current);
+    }
+  }
+
+  // 鍵盤控制
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight') nextSlide();
+    if(e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // 滑鼠點擊左右區域切換
+  document.addEventListener('click', (e) => {
+    if(e.clientX > window.innerWidth / 2) nextSlide();
+    else prevSlide();
+  });
+</script>
+
+</body>
+</html>
